@@ -76,15 +76,10 @@
     color: var(--cli-terminal-close);
     font-size: 2rem;
     line-height: 1;
-    cursor: default;
+    cursor: pointer;
     padding: 0;
     width: 2rem;
     height: 2rem;
-}
-
-.settingsButton {
-    font-size: 1.2rem;
-    cursor: pointer;
 }
 
 .settingsButton:hover,

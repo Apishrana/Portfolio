@@ -459,7 +459,10 @@ export default function PortfolioCli({ setTerminalOpen }: PortfolioCliProps) {
                 <div
                     ref={terminalBodyRef}
                     className={styles.terminalBody}
-                    onClick={() => inputRef.current?.focus()}>
+                    onClick={() => {
+                        inputRef.current?.focus();
+                        setSettingsOpen(false);
+                    }}>
                     <div className={styles.outputArea}>
                         {initialLines.map((line) => (
                             <p key={line} className={styles.outputLine}>
