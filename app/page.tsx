@@ -1,10 +1,18 @@
 'use client';
 
-import PortfolioCli from '@/components/portfolio-cli/portfolio-cli';
-
-import Loading from '@/components/loading/loading';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { LoadingBarContainer } from 'react-top-loading-bar';
+
+const PortfolioCli = dynamic(
+    () => import('@/components/portfolio-cli/portfolio-cli'),
+    {
+        ssr: false,
+    },
+);
+
+const Loading = dynamic(() => import('@/components/loading/loading'), {
+    ssr: false,
+});
 
 export default function Home() {
     const [loading, setLoading] = useState(true);
@@ -26,11 +34,7 @@ export default function Home() {
 
     return (
         <>
-            {loading && (
-                <LoadingBarContainer>
-                    <Loading />
-                </LoadingBarContainer>
-            )}
+            {loading && <Loading />}
 
             {terminalOpen && <PortfolioCli setTerminalOpen={setTerminalOpen} />}
             <div
