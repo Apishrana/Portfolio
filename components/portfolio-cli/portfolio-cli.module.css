@@ -1,0 +1,254 @@
+.page {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-width: 100vw;
+    padding: 3rem 1.5rem;
+    background: transparent;
+    overflow: hidden;
+}
+
+.backdrop {
+    position: absolute;
+    background: var(--background);
+    inset: 0;
+    opacity: 0.6;
+}
+
+.terminal {
+    z-index: 1;
+    width: min(100%, 57rem);
+    height: min(54rem, calc(100vh - 10rem));
+    max-height: calc(100vh - 10rem);
+    border: 2px solid var(--cli-terminal-border);
+    border-radius: 1rem;
+    background: var(--cli-terminal-background);
+    box-shadow: 0 24px 90px var(--cli-terminal-shadow);
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 3rem minmax(0, 1fr);
+}
+
+.terminalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.65rem 1.4rem 1.55rem;
+    border-bottom: 1px solid var(--cli-terminal-divider);
+}
+
+.terminalTitleRow {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.terminalIcon {
+    color: var(--cli-terminal-blue);
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.terminalTitle {
+    color: var(--cli-terminal-blue);
+    font-family: var(--font-geist-mono), monospace;
+    font-size: clamp(1.05rem, 1.3vw, 1.45rem);
+    letter-spacing: -0.02em;
+    font-weight: 300;
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.settingsWrap {
+    position: relative;
+}
+
+.settingsButton,
+.closeButton {
+    border: 0;
+    background: transparent;
+    color: var(--cli-terminal-close);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: default;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+}
+
+.settingsButton {
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.settingsButton:hover,
+.closeButton:hover {
+    color: var(--cli-terminal-blue);
+}
+
+.settingsPanel {
+    position: absolute;
+    top: calc(100% + 0.65rem);
+    right: 0;
+    z-index: 3;
+    display: grid;
+    gap: 0.75rem;
+    min-width: 12rem;
+    padding: 0.9rem;
+    border: 1px solid var(--cli-terminal-border);
+    border-radius: 0.75rem;
+    background: var(--cli-terminal-background);
+    box-shadow: 0 16px 40px var(--cli-terminal-shadow);
+}
+
+.settingRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--cli-terminal-green);
+    font-size: 0.85rem;
+}
+
+.settingRow input {
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+.terminalBody {
+    min-width: 0;
+    min-height: 0;
+    padding: 1.35rem 1.3rem 2rem;
+    font-family: var(--font-geist-mono), monospace;
+    cursor: text;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.outputArea {
+    display: flex;
+    flex-direction: column;
+}
+
+.outputLine {
+    margin: 0;
+    color: var(--cli-terminal-green);
+    font-size: clamp(0.9rem, 1vw, 1.15rem);
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.historyBlock {
+    margin-top: 0.15rem;
+}
+
+.historyCommand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--cli-terminal-green);
+    font-size: clamp(0.9rem, 1vw, 1.15rem);
+    line-height: 1.6;
+}
+
+.inputRow {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.7rem;
+    color: var(--cli-terminal-green);
+    font-size: clamp(0.9rem, 1vw, 1.15rem);
+    line-height: 1.6;
+}
+
+.promptSymbol {
+    color: var(--cli-terminal-blue);
+}
+
+.inputField {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    color: var(--cli-terminal-green);
+    font: inherit;
+    caret-color: var(--cli-terminal-green);
+}
+
+.inputField::placeholder {
+    color: var(--cli-terminal-green);
+    opacity: 0.45;
+}
+
+.inputField:focus {
+    outline: none;
+}
+
+.cursor {
+    width: 0.14rem;
+    height: 1.05rem;
+    margin-left: auto;
+    background: var(--cli-terminal-green);
+    animation: blink 1s ease infinite;
+}
+
+@keyframes blink {
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    50.01%,
+    100% {
+        opacity: 0.5;
+    }
+}
+
+@media (max-width: 900px) {
+    .page {
+        padding: 1rem;
+    }
+
+    .terminal {
+        width: min(100%, 46rem);
+        height: calc(100vh - 3rem);
+        max-height: calc(100vh - 3rem);
+        border-radius: 0.75rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .terminalHeader {
+        padding: 1.1rem 1rem;
+    }
+
+    .terminalBody {
+        padding: 1.2rem 1rem 1.5rem;
+    }
+
+    .terminalTitle {
+        font-size: 1.15rem;
+    }
+
+    .terminalIcon {
+        font-size: 1.1rem;
+    }
+
+    .closeButton {
+        font-size: 1.5rem;
+    }
+
+    .cursor {
+        height: 1.1rem;
+    }
+}
