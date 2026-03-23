@@ -13,15 +13,37 @@ export default function Loading() {
 
     useEffect(() => {
         const loadingBar = ref.current;
-        loadingBar?.continuousStart(12, 500);
-        // setInterval(() => {
-        //     setProgress(loadingBar?.getProgress());
-        // }, 20);
+        const duration = 4200;
+        const startedAt = performance.now();
 
-        setTimeout(() => {
+        loadingBar?.continuousStart(12, 500);
+
+        const updateProgress = () => {
+            const elapsed = performance.now() - startedAt;
+            const nextProgress = Math.min(
+                100,
+                Math.round((elapsed / duration) * 100),
+            );
+
+            setProgress(nextProgress);
+
+            if (nextProgress < 100) {
+                animationFrameId = window.requestAnimationFrame(updateProgress);
+            }
+        };
+
+        let animationFrameId = window.requestAnimationFrame(updateProgress);
+
+        const timeoutId = window.setTimeout(() => {
             loadingBar?.complete();
-        }, 4200);
-    }, [progress]);
+            setProgress(100);
+        }, duration);
+
+        return () => {
+            window.cancelAnimationFrame(animationFrameId);
+            window.clearTimeout(timeoutId);
+        };
+    }, []);
 
     return (
         <div className={styles.pageContainer}>
@@ -42,7 +64,7 @@ export default function Loading() {
                 />
                 <div className={styles.lastName}>RANA</div>
             </div>
-            <div className={styles.footer}>LOADING PORTFOLIO {progress} </div>
+            <div className={styles.footer}>LOADING PORTFOLIO {progress}%</div>
         </div>
     );
 }
