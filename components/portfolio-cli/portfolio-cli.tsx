@@ -259,6 +259,7 @@ export default function PortfolioCli({ setTerminalOpen }: PortfolioCliProps) {
     const [historyIndex, setHistoryIndex] = useState<number | null>(null);
     const [draftCommand, setDraftCommand] = useState('');
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [controlPressed, setControlPressed] = useState(false);
     const [themeColors, setThemeColors] = useState<ThemeColors>(
         getInitialThemeColors,
     );
@@ -497,10 +498,22 @@ export default function PortfolioCli({ setTerminalOpen }: PortfolioCliProps) {
                                     setDraftCommand(event.target.value);
                                 }
                             }}
+                            onKeyUp={(event) => {
+                                if (event.key === 'Control') {
+                                    setControlPressed(false);
+                                }
+                            }}
                             onKeyDown={(event) => {
+                                // console.log()
                                 if (event.key === 'Enter') {
                                     runCommand(command);
                                     return;
+                                }
+                                if (event.key === 'Control') {
+                                    setControlPressed(true);
+                                }
+                                if (event.key === 'c' && controlPressed) {
+                                    setTerminalOpen(false);
                                 }
 
                                 if (event.key === 'ArrowUp') {

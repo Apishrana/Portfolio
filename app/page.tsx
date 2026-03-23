@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import styles from './page.module.css';
 
 const PortfolioCli = dynamic(
     () => import('@/components/portfolio-cli/portfolio-cli'),
@@ -19,17 +20,11 @@ export default function Home() {
     const [terminalOpen, setTerminalOpen] = useState(false);
 
     useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth',
-        });
         setTimeout(() => {
             setLoading(false);
         }, 6000);
 
-        document.body.style.overflow =
-            loading || terminalOpen ? 'hidden' : 'auto';
+        document.body.style.overflow = 'hidden';
     }, [loading, terminalOpen]);
 
     return (
@@ -37,19 +32,15 @@ export default function Home() {
             {loading && <Loading />}
 
             {terminalOpen && <PortfolioCli setTerminalOpen={setTerminalOpen} />}
-            <div
-                style={{
-                    width: '100vw',
-                    height: '100vw',
-                    // background: 'white',
-                }}>
+
+            <main className={styles.pageContainer}>
                 <button
                     onClick={() => {
                         setTerminalOpen(true);
                     }}>
                     hygtfdsbgvfc
                 </button>
-            </div>
+            </main>
         </>
     );
 }
