@@ -4,6 +4,10 @@ html {
     color-scheme: dark light;
 }
 
+html.site-inverted {
+    filter: invert(1);
+}
+
 * {
     box-sizing: border-box;
 }

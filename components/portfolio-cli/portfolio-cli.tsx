@@ -28,6 +28,7 @@ type ThemeColors = {
 const helpLines = [
     'Available commands:',
     '  --help            Show this help message',
+    '  man <command>     Show manual page for a command',
     '  --profile         Display profile information',
     '  --projects        List all projects',
     '  --experience      Show work experience',
@@ -37,13 +38,193 @@ const helpLines = [
     '  --status          Show system status',
     '  --achievements    Show achievements and awards',
     '  clear             Clear the terminal',
+    '  ',
+    '  press ctrl+c to close the terminal',
+    '  sudo --help       Find out yourself',
 ];
+
+const manualPages: Record<string, string[]> = {
+    help: [
+        'HELP(1)',
+        '',
+        'NAME',
+        '    help, --help - show available portfolio terminal commands',
+        '',
+        'SYNOPSIS',
+        '    help',
+        '    --help',
+        '    man help',
+        '',
+        'DESCRIPTION',
+        '    Prints the list of supported commands and short descriptions.',
+    ],
+    clear: [
+        'CLEAR(1)',
+        '',
+        'NAME',
+        '    clear - clear the terminal output history',
+        '',
+        'SYNOPSIS',
+        '    clear',
+        '    man clear',
+        '',
+        'DESCRIPTION',
+        '    Removes prior command output and resets the visible terminal log.',
+    ],
+    profile: [
+        'PROFILE(1)',
+        '',
+        'NAME',
+        '    --profile - display profile information',
+        '',
+        'SYNOPSIS',
+        '    --profile',
+        '    man profile',
+        '',
+        'DESCRIPTION',
+        '    Shows identity, role, location, and current availability.',
+    ],
+    projects: [
+        'PROJECTS(1)',
+        '',
+        'NAME',
+        '    --projects - list project information',
+        '',
+        'SYNOPSIS',
+        '    --projects',
+        '    man projects',
+        '',
+        'DESCRIPTION',
+        '    Displays project entries and related showcase information.',
+    ],
+    experience: [
+        'EXPERIENCE(1)',
+        '',
+        'NAME',
+        '    --experience - show work experience',
+        '',
+        'SYNOPSIS',
+        '    --experience',
+        '    man experience',
+        '',
+        'DESCRIPTION',
+        '    Displays selected experience history and timeline data.',
+    ],
+    skills: [
+        'SKILLS(1)',
+        '',
+        'NAME',
+        '    --skills - display technical skills',
+        '',
+        'SYNOPSIS',
+        '    --skills',
+        '    man skills',
+        '',
+        'DESCRIPTION',
+        '    Lists tools, frameworks, and core technical focus areas.',
+    ],
+    education: [
+        'EDUCATION(1)',
+        '',
+        'NAME',
+        '    --education - show education details',
+        '',
+        'SYNOPSIS',
+        '    --education',
+        '    man education',
+        '',
+        'DESCRIPTION',
+        '    Shows education-related information for the portfolio owner.',
+    ],
+    contact: [
+        'CONTACT(1)',
+        '',
+        'NAME',
+        '    --contact - display contact information',
+        '',
+        'SYNOPSIS',
+        '    --contact',
+        '    man contact',
+        '',
+        'DESCRIPTION',
+        '    Prints primary communication and social links.',
+    ],
+    status: [
+        'STATUS(1)',
+        '',
+        'NAME',
+        '    --status - show system status',
+        '',
+        'SYNOPSIS',
+        '    --status',
+        '    man status',
+        '',
+        'DESCRIPTION',
+        '    Reports terminal and portfolio state indicators.',
+    ],
+    achievements: [
+        'ACHIEVEMENTS(1)',
+        '',
+        'NAME',
+        '    --achievements - show achievements and awards',
+        '',
+        'SYNOPSIS',
+        '    --achievements',
+        '    man achievements',
+        '',
+        'DESCRIPTION',
+        '    Displays awards, notable outcomes, and milestone notes.',
+    ],
+    inv: [
+        'INV(1)',
+        '',
+        'NAME',
+        '    inv, - toggle website color inversion',
+        '',
+        'SYNOPSIS',
+        '    inv',
+        '    man inv',
+        '',
+        'DESCRIPTION',
+        '    Toggles a global inversion class on the site root.',
+    ],
+    'sudo --help': [
+        'SUDO-HELP(1)',
+        '',
+        'NAME',
+        '    sudo --help - reveal hidden terminal commands',
+        '',
+        'SYNOPSIS',
+        '    sudo --help',
+        '    man sudo --help',
+        '',
+        'DESCRIPTION',
+        '    Prints the hidden command list for experimental terminal features.',
+    ],
+    man: [
+        'MAN(1)',
+        '',
+        'NAME',
+        '    man - format and display command manual pages',
+        '',
+        'SYNOPSIS',
+        '    man <command>',
+        '',
+        'DESCRIPTION',
+        '    Displays the manual page for a supported terminal command.',
+    ],
+};
 
 const commandMap: Record<string, string[]> = {
     '': [''],
     '--help': helpLines,
     help: helpLines,
-    man: helpLines,
+    'sudo --help': [
+        ...helpLines,
+        '  cursor            Change cursor type',
+        '  trail             Toggle cursor trail',
+        "  inv               Toggle website color inversion",
+    ],
     '--profile': [
         'Profile: Apish Rana',
         'Role: Frontend developer',
@@ -230,6 +411,38 @@ function rgbaFromHex(hex: string, alpha: number) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+function rgbStringToHex(color: string) {
+    const match = color.match(/\d+/g);
+
+    if (!match || match.length < 3) {
+        return color;
+    }
+
+    const [r, g, b] = match.slice(0, 3).map((value) => Number(value));
+
+    return `#${[r, g, b]
+        .map((channel) => channel.toString(16).padStart(2, '0'))
+        .join('')}`;
+}
+
+function normalizeColorValue(color: string, fallback: string) {
+    const trimmed = color.trim();
+
+    if (!trimmed) {
+        return fallback;
+    }
+
+    if (trimmed.startsWith('#')) {
+        return trimmed;
+    }
+
+    if (trimmed.startsWith('rgb')) {
+        return rgbStringToHex(trimmed);
+    }
+
+    return fallback;
+}
+
 function getInitialThemeColors(): ThemeColors {
     if (typeof window === 'undefined') {
         return defaultThemeColors;
@@ -238,16 +451,27 @@ function getInitialThemeColors(): ThemeColors {
     const rootStyles = getComputedStyle(document.documentElement);
 
     return {
-        background:
-            rootStyles.getPropertyValue(cssVariableMap.background).trim() ||
+        background: normalizeColorValue(
+            rootStyles.getPropertyValue(cssVariableMap.background),
             defaultThemeColors.background,
-        blue:
-            rootStyles.getPropertyValue(cssVariableMap.blue).trim() ||
+        ),
+        blue: normalizeColorValue(
+            rootStyles.getPropertyValue(cssVariableMap.blue),
             defaultThemeColors.blue,
-        green:
-            rootStyles.getPropertyValue(cssVariableMap.green).trim() ||
+        ),
+        green: normalizeColorValue(
+            rootStyles.getPropertyValue(cssVariableMap.green),
             defaultThemeColors.green,
+        ),
     };
+}
+
+function getInitialInvertedState() {
+    if (typeof window === 'undefined') {
+        return false;
+    }
+
+    return document.documentElement.classList.contains('site-inverted');
 }
 
 export default function PortfolioCli({ setTerminalOpen }: PortfolioCliProps) {
@@ -260,6 +484,7 @@ export default function PortfolioCli({ setTerminalOpen }: PortfolioCliProps) {
     const [draftCommand, setDraftCommand] = useState('');
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [controlPressed, setControlPressed] = useState(false);
+    const [isInverted, setIsInverted] = useState(getInitialInvertedState);
     const [themeColors, setThemeColors] = useState<ThemeColors>(
         getInitialThemeColors,
     );
@@ -334,10 +559,58 @@ export default function PortfolioCli({ setTerminalOpen }: PortfolioCliProps) {
     }, [history]);
 
     const runCommand = (rawCommand: string) => {
-        const trimmedCommand = rawCommand.trim();
+        const trimmedCommand = rawCommand.trim().toLowerCase();
+        const [baseCommand, ...restArgs] = trimmedCommand.split(/\s+/);
+        const manTargetRaw =
+            baseCommand === 'man' ? restArgs.join(' ').trim() : '';
+        const manTarget = manTargetRaw.replace(/^--/, '');
 
         if (trimmedCommand === 'clear') {
             setHistory([]);
+            setCommand('');
+            setHistoryIndex(null);
+            setDraftCommand('');
+            return;
+        }
+
+        if (baseCommand === 'man') {
+            const output = !manTarget
+                ? [
+                      'What manual page do you want?',
+                      'For example, try: man help',
+                  ]
+                : manualPages[manTarget] ??
+                  manualPages[manTargetRaw] ?? [
+                      `No manual entry for ${manTargetRaw}.`,
+                  ];
+
+            setHistory((currentHistory) => [
+                ...currentHistory,
+                { command: trimmedCommand, output },
+            ]);
+            setCommand('');
+            setHistoryIndex(null);
+            setDraftCommand('');
+            return;
+        }
+
+        if (trimmedCommand === 'inv' || trimmedCommand === 'ivn') {
+            const nextInvertedState = !isInverted;
+
+            document.documentElement.classList.toggle(
+                'site-inverted',
+                nextInvertedState,
+            );
+            setIsInverted(nextInvertedState);
+            setHistory((currentHistory) => [
+                ...currentHistory,
+                {
+                    command: trimmedCommand,
+                    output: [
+                        `Website inversion ${nextInvertedState ? 'enabled' : 'disabled'}.`,
+                    ],
+                },
+            ]);
             setCommand('');
             setHistoryIndex(null);
             setDraftCommand('');
