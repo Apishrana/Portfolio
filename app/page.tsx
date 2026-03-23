@@ -14,6 +14,15 @@ const PortfolioCli = dynamic(
 const Loading = dynamic(() => import('@/components/loading/loading'), {
     ssr: false,
 });
+const Navbar = dynamic(() => import('@/components/navbar/nav'), {
+    ssr: false,
+});
+const PageContent = dynamic(
+    () => import('@/components/page contant/page contant'),
+    {
+        ssr: false,
+    },
+);
 
 export default function Home() {
     const [loading, setLoading] = useState(true);
@@ -34,12 +43,8 @@ export default function Home() {
             {terminalOpen && <PortfolioCli setTerminalOpen={setTerminalOpen} />}
 
             <main className={styles.pageContainer}>
-                <button
-                    onClick={() => {
-                        setTerminalOpen(true);
-                    }}>
-                    hygtfdsbgvfc
-                </button>
+                <Navbar setTerminalOpen={setTerminalOpen} />
+                <PageContent />
             </main>
         </>
     );

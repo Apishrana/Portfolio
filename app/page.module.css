@@ -1,6 +1,10 @@
 .pageContainer {
     width: 100vw;
     height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
+    background-color: var(--background-back);
+    /* overflow-y: auto;
+    overflow-x: hidden; */
+    /* display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: clamp(3rem, calc(0.143rem + 4.464vw), 5.5rem), 1fr, 1fr; */
 }

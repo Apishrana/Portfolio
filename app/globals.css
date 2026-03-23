@@ -13,10 +13,11 @@ html.site-inverted {
 }
 
 :root {
+    --background-back: #000000;
     --background: #ffffff;
     --foreground: #171717;
     --muted-foreground: rgba(23, 23, 23, 0.62);
-    --cli-terminal-background: #000000;
+    --cli-terminal-background: #121111;
     --cli-terminal-border: rgba(50, 107, 231, 0.45);
     --cli-terminal-divider: rgba(37, 99, 235, 0.32);
     --cli-terminal-shadow: rgba(0, 0, 0, 0.34);
@@ -32,6 +33,7 @@ html.site-inverted {
 
 @media (prefers-color-scheme: dark) {
     :root {
+        --background-back: #454545;
         --background: #0a0a0a;
         --foreground: #ededed;
         --muted-foreground: rgba(237, 237, 237, 0.62);

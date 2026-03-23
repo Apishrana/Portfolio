@@ -1,0 +1,17 @@
+.page {
+    height: calc(100vh - clamp(3rem, calc(0.143rem + 4.464vw), 5.5rem));
+    background: var(--background-back);
+    display: grid;
+    grid-template-columns: 2.5fr 6fr 3.5fr;
+}
+.pageSection {
+    border-radius: clamp(1rem, calc(-0.143rem + 1.786vw), 2rem);
+    background: var(--background);
+    border-right: 1px solid var(--background-back);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pageRightSection {
+    border: none;
+}

@@ -1,0 +1,26 @@
+.navbar {
+    height: clamp(3rem, calc(0.143rem + 4.464vw), 5.5rem);
+    background: var(--background);
+    border-radius: clamp(0.625rem, calc(0.196rem + 0.67vw), 1rem);
+    border: 1px solid var(--background-back);
+    display: grid;
+    grid-template-columns: 2.5fr 6fr 3.5fr;
+}
+.navSection {
+    border-right: 1px solid var(--background-back);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.navTittleSection {
+    font-size: 1.75rem;
+}
+.navNameSection {
+    font-size: 2.25rem;
+}
+.navMiscSection {
+    border: none;
+}
+.navButton {
+    padding: 1rem;
+}

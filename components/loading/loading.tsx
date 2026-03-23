@@ -4,20 +4,24 @@ import styles from './loading.module.css';
 import { Player } from '@lottiefiles/react-lottie-player';
 
 import loading from '@/public/lottiefiles/Loading.json';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar';
 
 export default function Loading() {
     const ref = useRef<LoadingBarRef>(null);
+    const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         const loadingBar = ref.current;
-
         loadingBar?.continuousStart(12, 500);
+        // setInterval(() => {
+        //     setProgress(loadingBar?.getProgress());
+        // }, 20);
+
         setTimeout(() => {
             loadingBar?.complete();
         }, 4200);
-    }, []);
+    }, [progress]);
 
     return (
         <div className={styles.pageContainer}>
@@ -38,7 +42,7 @@ export default function Loading() {
                 />
                 <div className={styles.lastName}>RANA</div>
             </div>
-            <div className={styles.footer}>LOADING PORTFOLIO</div>
+            <div className={styles.footer}>LOADING PORTFOLIO {progress} </div>
         </div>
     );
 }
