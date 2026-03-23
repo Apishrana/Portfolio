@@ -223,7 +223,7 @@ const commandMap: Record<string, string[]> = {
         ...helpLines,
         '  cursor            Change cursor type',
         '  trail             Toggle cursor trail',
-        "  inv               Toggle website color inversion",
+        '  inv               Toggle website color inversion',
     ],
     '--profile': [
         'Profile: Apish Rana',
@@ -378,7 +378,7 @@ const cssVariableMap = {
     background: '--cli-terminal-background',
     blue: '--cli-terminal-blue',
     green: '--cli-terminal-green',
-} as const;
+};
 
 const defaultThemeColors: ThemeColors = {
     background: '#000000',
@@ -579,10 +579,10 @@ export default function PortfolioCli({ setTerminalOpen }: PortfolioCliProps) {
                       'What manual page do you want?',
                       'For example, try: man help',
                   ]
-                : manualPages[manTarget] ??
+                : (manualPages[manTarget] ??
                   manualPages[manTargetRaw] ?? [
                       `No manual entry for ${manTargetRaw}.`,
-                  ];
+                  ]);
 
             setHistory((currentHistory) => [
                 ...currentHistory,
