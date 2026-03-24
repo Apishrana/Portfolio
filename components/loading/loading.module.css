@@ -50,7 +50,14 @@
     letter-spacing: 3.8px;
     color: var(--muted-foreground);
 }
-
+@media (max-width: 1000px) {
+    .firstName {
+        animation-name: NameLeftTab;
+    }
+    .lastName {
+        animation-name: NameRightTab;
+    }
+}
 @media (max-width: 768px) {
     .nameArea {
         flex-direction: column;
@@ -61,6 +68,14 @@
     .lastName {
         width: 100%;
         text-align: center;
+    }
+    .firstName {
+        animation-name: NameLeftMob;
+        animation-duration: 7.5s;
+    }
+    .lastName {
+        animation-name: NameRightMob;
+        animation-duration: 7.5s;
     }
 
     .loaderCore {
@@ -101,5 +116,41 @@
     }
     100% {
         opacity: 0;
+    }
+}
+
+@keyframes NameLeftTab {
+    0% {
+        transform: scale(1) translateX(100px);
+    }
+    75% {
+        transform: scale(1.2) translateX(0);
+    }
+}
+
+@keyframes NameRightTab {
+    0% {
+        transform: scale(1) translateX(-100px);
+    }
+    75% {
+        transform: scale(1.2) translateX(0);
+    }
+}
+
+@keyframes NameLeftMob {
+    0% {
+        transform: scale(1) translateY(-100px);
+    }
+    75% {
+        transform: scale(1.2) translateY(50px);
+    }
+}
+
+@keyframes NameRightMob {
+    0% {
+        transform: scale(1) translateY(100px);
+    }
+    75% {
+        transform: scale(1.2) translateY(-50px);
     }
 }
