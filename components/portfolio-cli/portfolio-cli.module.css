@@ -29,14 +29,17 @@
     overflow: hidden;
     display: grid;
     grid-template-rows: 3rem minmax(0, 1fr);
+    user-select: none;
 }
 
 .terminalHeader {
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1.65rem 1.4rem 1.55rem;
     border-bottom: 1px solid var(--cli-terminal-divider);
+    background: var(--cli-terminal-background);
 }
 
 .terminalTitleRow {
@@ -127,6 +130,7 @@
     font-family: var(--font-geist-mono), monospace;
     cursor: text;
     overflow-y: auto;
+    scrollbar-width: none;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
 }
@@ -171,6 +175,11 @@
     color: var(--cli-terminal-blue);
 }
 
+.inputFieldContainer {
+    flex: 1;
+    position: relative;
+    display: flex;
+}
 .inputField {
     flex: 1;
     border: 0;
@@ -179,7 +188,9 @@
     font: inherit;
     caret-color: var(--cli-terminal-green);
 }
-
+.inputFieldInitial {
+    caret-color: transparent;
+}
 .inputField::placeholder {
     color: var(--cli-terminal-green);
     opacity: 0.45;
@@ -190,11 +201,15 @@
 }
 
 .cursor {
-    width: 0.14rem;
-    height: 1.05rem;
+    width: 0.5rem;
+    height: 1.5em;
     margin-left: auto;
     background: var(--cli-terminal-green);
     animation: blink 1s ease infinite;
+    position: absolute;
+    left: 0;
+    padding-top: auto;
+    padding-bottom: auto;
 }
 
 @keyframes blink {
